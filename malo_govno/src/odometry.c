@@ -37,9 +37,7 @@ static void odometry_query_position(void)
 	buffer[0] = 'P';
 	while(CAN_Write(buffer, DRIVER_TX_IDENTIFICATOR))
 		_delay_ms(50);
-	//uso
 	CAN_Read(buffer, DRIVER_RX_IDENTIFICATOR);
-	//nije uso
 	position.state = buffer[0];
 	position.x	   = (buffer[1] << 8) | buffer[2];
 	position.y	   = (buffer[3] << 8) | buffer[4];
@@ -49,12 +47,9 @@ static void odometry_query_position(void)
 static uint8_t odometry_wait_until_done(uint8_t (*callback)(uint32_t start_time))
 {
 	uint32_t time = system_get_system_time();
-	//uso
 	do
 	{
-		//uso
 		odometry_query_position();
-		//nije uso
 		if(callback != NULL)
 		{
 			if(callback(time) == 1)
@@ -110,8 +105,9 @@ uint8_t odometry_move_to_position(struct odometry_position* position, uint8_t sp
 	buffer[6] = direction * -1;
 	while(CAN_Write(buffer, DRIVER_TX_IDENTIFICATOR))
 		_delay_ms(50);
-
-	return odometry_wait_until_done(callback);
+	
+	return 0;
+	//return odometry_wait_until_done(callback);
 }
 
 void odometry_set_position(struct odometry_position* new_position)

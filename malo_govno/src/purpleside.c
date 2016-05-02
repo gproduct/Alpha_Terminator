@@ -50,17 +50,23 @@ const struct goto_fields purple_tactic_one_positions[TACTIC_ONE_POSITION_COUNT] 
 };
 void purpleside(void)
 {
+	logger("Chosen purple side | purpleside.c\n");
+	
 	struct odometry_position starting_position;
 	uint8_t current_position = 0;
 	uint8_t next_position = 0;
 	uint8_t odometry_status;
 	int8_t active_state = ROBOT_STATE_TACTIC_ONE;
 	
+	logger("Activestate is set to tactic one | purpleside.c\n");
+	
 	starting_position.x		= 180;
 	starting_position.y		= 1010;
 	starting_position.angle = 90;
 	
 	odometry_set_position(&starting_position);
+
+	logger("Starting position set. Continuing...| purpleside.c \n");	
 	
 	while(1)
 	{
@@ -69,9 +75,10 @@ void purpleside(void)
 			case ROBOT_STATE_TACTIC_ONE:
 				for(current_position = next_position;current_position < TACTIC_ONE_POSITION_COUNT; current_position++)
 				{
+					
 					odometry_status = odometry_move_to_position(&(purple_tactic_one_positions[current_position].point), purple_tactic_one_positions[current_position].speed,
 																purple_tactic_one_positions[current_position].direction,purple_tactic_one_positions[current_position].callback); 
-
+																
 					if(odometry_status == ODOMETRY_FAIL)
 					{
 						break;
@@ -90,8 +97,7 @@ void purpleside(void)
 						_delay_ms(800);
 						odometry_move_straight(-200,LOW_SPEED,NULL);
 						_delay_ms(500);
-						odometry_set_angle(90,LOW_SPEED,NULL);
-						
+						odometry_set_angle(90,LOW_SPEED,NULL);	
 					}
 					else if(current_position == 8)
 					{

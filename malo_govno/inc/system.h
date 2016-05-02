@@ -30,27 +30,37 @@
 #define SENSOR_B_L_PIN			12		//portb 4
 #define SENSOR_B_R_PIN			14		//portb 6
 
-
+//Function to enable the timer with argument of the frequency
 void timer_init(unsigned int freq);
 
+//Debugging functions | alpha
+void logger(char text[]);
+void breakpoint();
+
+//Variables
 unsigned char restartCheck;
 unsigned char stateRobot;
-
 int active_state;
 
-void delay(double ms);
-void wait_for_big_robot(double time_to_wait);
+//Function that returns the state of the robot
+uint8_t return_active_state(void);
+
+//Custom delay function that is used when the _delay_ms() function is not counting precisly
+void delay_ms(uint32_t ms);
 
 //int camera(void);
+
+//Checking the side switch function
 signed char sides_switch_check(void);
 
+//Initing the system functions
 void system_init(void);
 
-//Funkcije za proveru senzora, jumpera i prekidaca
-uint8_t return_active_state(void);
+//Functions that are used with sensors
 signed char check_front_sensors(signed char sensor);
 signed char check_back_sensors(signed char sensor);
 
+//Functions for setting and getting match started
 void system_set_match_started(void);
 uint8_t system_get_match_started(void);
 

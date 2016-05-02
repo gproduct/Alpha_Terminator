@@ -20,7 +20,8 @@ src/system.d src/system.o src/system.o: ../src/system.c \
   c:/winavr-20100110/lib/gcc/../../avr/include/stdio.h \
   c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stdarg.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/string.h \
-  ../inc/actuators.h ../inc/list_generic.h ../inc/odometry.h
+  ../inc/actuators.h ../inc/list_generic.h ../inc/odometry.h \
+  ../inc/uart.h
 
 c:/winavr-20100110/lib/gcc/../../avr/include/stdint.h:
 
@@ -73,3 +74,5 @@ c:/winavr-20100110/lib/gcc/../../avr/include/string.h:
 ../inc/list_generic.h:
 
 ../inc/odometry.h:
+
+../inc/uart.h:

@@ -12,6 +12,7 @@
 #include "actuators.h"
 #include "list_generic.h"
 #include "odometry.h"
+#include "uart.h"
 
 static volatile unsigned long sys_time;
 static uint8_t match_started;
@@ -23,6 +24,27 @@ unsigned int received = 0;
 void timer_register_callback(void (*callback)(void))
 {
     timer_callback = callback;
+}
+void logger(char text[])//uart 0
+{
+	int i = 0;
+	
+	while(text[i] != 0x00)
+	{
+		UART1_Write(text[i]);
+		i++;
+	}
+}
+void breakpoint()
+{
+	unsigned char read;
+	while(read != 'c')
+	{
+		_delay_ms(100);
+		logger("Breakpoint reached!");
+		
+		read = UART1_Read();
+	}
 }
 /*
 static int combination_check()
@@ -100,16 +122,6 @@ ISR(TIMER1_COMPA_vect)
 		actuators_umbrella();
 	sys_time++;
 }
-void delay(double ms)
-{
-	double current_time;
-	current_time = sys_time;
-	while(!(sys_time - current_time) >= ms);
-}
-void wait_for_big_robot(double time_to_wait)
-{
-	while(sys_time < time_to_wait);
-}
 signed char sides_switch_check(void)
 {
 	if(gpio_read_pin(SIDE_PIN) == 1)
@@ -140,16 +152,19 @@ uint8_t return_active_state(void)
 {
 	return active_state;
 }
+/*
 void delay_ms(uint32_t ms)
 {
 	uint32_t current;
 	current = system_get_system_time();
 	while((sys_time - current ) < ms);
 }
+*/
 void system_init(void)
 {	
 
 	timer_register_callback(gpio_debouncer);
+	
 	_delay_ms(100);
 	
 	gpio_register_pin(JUMPER_PIN,GPIO_DIRECTION_INPUT,TRUE);							//jumper
@@ -166,14 +181,22 @@ void system_init(void)
 	servo_init(50);
 	timer_init(1000);
 	CAN_Init(1);
+	initUart1(UART1_BAUD,UART_ISR_OFF);
 
-	actuators_setup();
+	//actuators_setup();
+	
+	logger("Everything setup, waiting for jumper | system.c\n");
 	
 	while(!(gpio_read_pin(JUMPER_PIN)));
 		_delay_ms(10);
+		
+	logger("Jumper got pulled,reseted system and set match started. Continuing...\n");
+
 	PORTG = 0xff;
 	system_reset_system_time();
 	system_set_match_started();
+	
+	
 }
 signed char check_front_sensors(signed char sensor)
 {

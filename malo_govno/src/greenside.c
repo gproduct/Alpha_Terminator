@@ -47,21 +47,26 @@ const struct goto_fields green_tactic_one_positions[TACTIC_ONE_POSITION_COUNT] =
 	{{580,1960},20,FORWARD,NULL},								//POSITION 13			PUSH DOOR NUM 2
 	{{580,1660},20,BACKWARD,NULL},								//POSITION 14			GO BACK
 	{{85,1660},20,FORWARD,NULL}									//POSITION 15			GO AND HIDE 100
-		//270,530
 };
 void greenside(void)
 {
+	logger("Chosen green side | greenside.c\n");
+	
 	struct odometry_position starting_position;
 	uint8_t current_position = 0;
 	uint8_t next_position = 0;
 	uint8_t odometry_status;
 	int8_t active_state = ROBOT_STATE_TACTIC_ONE;
 	
+	logger("Activestate is set to tactic one | greenside.c\n");
+	
 	starting_position.x		= 180;
 	starting_position.y		= 990;
 	starting_position.angle = 90;
 	
 	odometry_set_position(&starting_position);
+	
+	logger("Starting position set. Continuing...| greenside.c \n");
 
 	while(1)
 	{

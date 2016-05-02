@@ -8,12 +8,14 @@
 #include "actuators.h"
 
 int set = 1;
-
+unsigned char received;
 int main()
 {
 
 	system_init();
 	_delay_ms(100);
+	
+	breakpoint();
 	
 	while(set)
 	{
